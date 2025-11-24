@@ -29,6 +29,13 @@ variable "cf_password" {
   description = "Cloud Foundry password"
   sensitive   = true
 }
+
+variable "cli_server_url" {
+  type        = string
+  description = "BTP CLI server URL"
+  default     = "https://canary.cli.btp.int.sap"
+}
+
 variable "region" {
   type        = string
   description = "The region where the project account shall be created in."

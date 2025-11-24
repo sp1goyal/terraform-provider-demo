@@ -12,7 +12,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: teched-demo
+        working-directory: teched-demo/trial_cf_deployment
 
     env:
       TF_IN_AUTOMATION: "true"

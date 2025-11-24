@@ -87,7 +87,7 @@ resource "cloudfoundry_app" "hello-terraform" {
   space_name = cloudfoundry_space.space.name
   buildpacks = ["nodejs_buildpack"]
   memory     = "512M"
-  path       = "./assets/helloterraform.zip/"
+  path       = "./assets/helloterraform.zip"
   service_bindings = [
     {
       service_instance = cloudfoundry_service_instance.hello-terraform-xsuaa.name
@@ -98,7 +98,4 @@ resource "cloudfoundry_app" "hello-terraform" {
       route = cloudfoundry_route.hello-terraform-route.url
     }
   ]
-  provisioner "local-exec" {
-      command = "zip -r ./assets/helloterraformapp.zip ./assets/helloterraform.zip/"
-  }
 }

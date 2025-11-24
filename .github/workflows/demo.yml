@@ -1,51 +1,87 @@
 name: Run Terraform to Deploy Application on CloudFoundry
 
 on:
-    push:
-        tags:
-            - "demorun-*"
+  push:
+    tags:
+      - "demorun-*"
 
 jobs:
-    terraform:
-        name: Run Terraform
-        runs-on: ubuntu-latest
+  terraform:
+    name: Run Terraform
+    runs-on: ubuntu-latest
 
-        defaults:
-            run:
-                working-directory: btp-demo
+    defaults:
+      run:
+        working-directory: btp-demo
 
-        env:
-            TF_IN_AUTOMATION: "true"
+    env:
+      TF_IN_AUTOMATION: "true"
 
-            # BTP Credentials
-            TF_VAR_btp_username: ${{ secrets.BTP_USERNAME }}
-            TF_VAR_btp_password: ${{ secrets.BTP_PASSWORD }}
-            TF_VAR_btp_globalaccount: ${{ secrets.BTP_GLOBALACCOUNT }}
+      # BTP Credentials
+      TF_VAR_btp_username: ${{ secrets.BTP_USERNAME }}
+      TF_VAR_btp_password: ${{ secrets.BTP_PASSWORD }}
+      TF_VAR_btp_globalaccount: ${{ secrets.BTP_GLOBALACCOUNT }}
 
-            # Cloud Foundry Credentials
-            TF_VAR_cf_api_url: ${{ secrets.CF_API_URL }}
-            TF_VAR_cf_user: ${{ secrets.CF_USER }}
-            TF_VAR_cf_password: ${{ secrets.CF_PASSWORD }}
+      # Cloud Foundry Credentials
+      TF_VAR_cf_api_url: ${{ secrets.CF_API_URL }}
+      TF_VAR_cf_user: ${{ secrets.CF_USER }}
+      TF_VAR_cf_password: ${{ secrets.CF_PASSWORD }}
 
-        steps:
-            - name: Checkout Repository
-              uses: actions/checkout@v5
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
 
-            - name: Setup Terraform
-              id : setup_terraform
-              uses: hashicorp/setup-terraform@v3.1.2
-              with:
-                terraform_wrapper: false
-                terraform_version: latest
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+          terraform_version: latest
 
-            - name: Terraform Init (from provider.tf)
-              run: terraform init
+      - name: Terraform Init
+        run: terraform init -input=false
 
-            - name: Terraform Validate
-              run: terraform validate
+      - name: Terraform Validate
+        run: terraform validate
 
-            - name: Terraform Plan
-              run: terraform plan -input=false
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan -input=false
 
-            - name: Terraform Apply
-              run: terraform apply -auto-approve
+      - name: Terraform Apply (Demo Mode)
+        run: terraform apply -auto-approve tfplan
+
+      # ----------------------
+      # EXPORT STATE
+      # ----------------------
+      - name: Copy Terraform State
+        run: cp terraform.tfstate terraform-state.json
+
+      # ----------------------
+      # RESOURCE LIST
+      # ----------------------
+      - name: Export Resource List
+        run: terraform state list > terraform-resources.txt
+
+      # ----------------------
+      # GRAPH GENERATION
+      # ----------------------
+      - name: Install Graphviz
+        run: sudo apt-get install -y graphviz
+
+      - name: Generate Terraform Graph (.dot)
+        run: terraform graph > terraform-graph.dot
+
+      - name: Convert Graph to Image (PNG)
+        run: dot -Tpng terraform-graph.dot -o terraform-graph.png
+
+      # ----------------------
+      # UPLOAD ARTIFACTS
+      # ----------------------
+      - name: Upload Terraform Outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-demo-output
+          path: |
+            btp-demo/terraform-state.json
+            btp-demo/terraform-resources.txt
+            btp-demo/terraform-graph.dot
+            btp-demo/terraform-graph.png

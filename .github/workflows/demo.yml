@@ -10,9 +10,9 @@ jobs:
     name: Run Terraform
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: teched-demo/trial_cf_deployment
+    # defaults:
+    #   run:
+    #     working-directory: teched-demo/trial_cf_deployment
 
     env:
       TF_IN_AUTOMATION: "true"

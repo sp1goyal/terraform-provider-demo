@@ -70,10 +70,14 @@ jobs:
           cd ../
 
       - name: Terraform Validate
-        run: terraform validate
+        run: |
+          pwd
+          terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan -input=false
+        run: |
+          pwd
+          terraform plan -out=tfplan -input=false
 
       - name: Terraform Apply (Demo Mode)
         run: terraform apply -auto-approve tfplan

@@ -12,13 +12,13 @@ terraform {
 }
 
 provider "btp" {
-  username = env("BTP_USERNAME")
-  password = env("BTP_PASSWORD")
-  globalaccount = env("BTP_GLOBALACCOUNT")
+  username = var.btp_username
+  password = var.btp_password
+  globalaccount = var.btp_globalaccount
 }
 provider "cloudfoundry" {
-  api_url = env("CF_API_URL")
-  user = env("CF_USER")
-  password = env("CF_PASSWORD")
+  api_url = var.cf_api_url
+  user = var.cf_user
+  password = var.cf_password
   skip_ssl_validation = true
 }

@@ -1,3 +1,34 @@
+variable "btp_username" {
+  type        = string
+  description = "BTP username / email"
+}
+
+variable "btp_password" {
+  type        = string
+  description = "BTP password"
+  sensitive   = true
+}
+
+variable "btp_globalaccount" {
+  type        = string
+  description = "BTP Global Account ID"
+}
+
+variable "cf_api_url" {
+  type        = string
+  description = "Cloud Foundry API URL"
+}
+
+variable "cf_user" {
+  type        = string
+  description = "Cloud Foundry username"
+}
+
+variable "cf_password" {
+  type        = string
+  description = "Cloud Foundry password"
+  sensitive   = true
+}
 variable "region" {
   type        = string
   description = "The region where the project account shall be created in."

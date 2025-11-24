@@ -1,0 +1,41 @@
+name: Run Terraform to Deploy Application on CloudFoundry
+
+on:
+    push:
+        tags:
+            - "demorun-*"
+
+jobs:
+    terraform:
+        name: Run Terraform
+        runs-on: ubuntu-latest
+
+        env:
+            TF_IN_AUTOMATION: "true"
+
+            # BTP Credentials
+            BTP_USERNAME: ${{ secrets.BTP_USERNAME }}
+            BTP_PASSWORD: ${{ secrets.BTP_PASSWORD }}
+            BTP_GLOBALACCOUNT: ${{ secrets.BTP_GLOBALACCOUNT }}
+
+            # Cloud Foundry Credentials
+            CF_API_URL: ${{ secrets.CF_API_URL }}
+            CF_USER: ${{ secrets.CF_USER }}
+            CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v5
+
+            - name: Setup Terraform
+              id : setup_terraform
+              uses: hashicorp/setup-terraform@v3.1.2
+              with:
+                terraform_wrapper: false
+                terraform_version: latest
+
+            - name: Terraform Init (from provider.tf)
+              run: terraform init
+
+            - name: Terraform Apply
+              run: terraform apply -auto-approve

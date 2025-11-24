@@ -1,9 +1,3 @@
-variable "globalaccount" {
-  type        = string
-  description = "The subdomain of the SAP BTP global account."
-  default = "f784c3d8trial-ga"
-}
-
 variable "region" {
   type        = string
   description = "The region where the project account shall be created in."

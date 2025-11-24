@@ -10,6 +10,10 @@ jobs:
         name: Run Terraform
         runs-on: ubuntu-latest
 
+        defaults:
+            run:
+                working-directory: btp-demo
+
         env:
             TF_IN_AUTOMATION: "true"
 
@@ -36,6 +40,12 @@ jobs:
 
             - name: Terraform Init (from provider.tf)
               run: terraform init
+
+            - name: Terraform Validate
+              run: terraform validate
+
+            - name: Terraform Plan
+              run: terraform plan -input=false
 
             - name: Terraform Apply
               run: terraform apply -auto-approve

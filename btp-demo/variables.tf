@@ -32,7 +32,7 @@ variable "cf_password" {
 variable "region" {
   type        = string
   description = "The region where the project account shall be created in."
-  default     = "us10"
+  default     = "eu12"
 }
 variable "project_name" {
   type        = string

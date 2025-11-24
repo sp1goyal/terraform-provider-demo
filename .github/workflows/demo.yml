@@ -12,7 +12,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: btp-demo
+        working-directory: teched-demo
 
     env:
       TF_IN_AUTOMATION: "true"
@@ -37,8 +37,32 @@ jobs:
           terraform_wrapper: false
           terraform_version: latest
 
+      - name: Create terraform.rc file
+        run: |
+          PLUGIN_DIR="$(go env GOPATH)/bin"
+          
+          cat <<EOF > ~/.terraformrc
+          provider_installation {
+            dev_overrides {
+              "sap/btp" = "${PLUGIN_DIR}"
+              "cloudfoundry/cloudfoundry" = "${PLUGIN_DIR}"
+            }
+            direct {}
+          }
+          EOF
+
       - name: Terraform Init
-        run: terraform init -input=false
+        run: |
+          git clone https://github.com/SAP/terraform-provider-btp.git
+          git clone https://github.com/cloudfoundry/terraform-provider-cloudfoundry.git
+
+          cd terraform-provider-btp
+          make install
+
+          cd ../terraform-provider-cloudfoundry
+          make install
+
+          cd ../
 
       - name: Terraform Validate
         run: terraform validate

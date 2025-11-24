@@ -87,7 +87,7 @@ resource "cloudfoundry_app" "hello-terraform" {
   space_name = cloudfoundry_space.space.name
   buildpacks = ["nodejs_buildpack"]
   memory     = "512M"
-  path       = data.archive_file.hello-terraform.output_path
+  path       = "./assets/helloterraform.zip/"
   service_bindings = [
     {
       service_instance = cloudfoundry_service_instance.hello-terraform-xsuaa.name

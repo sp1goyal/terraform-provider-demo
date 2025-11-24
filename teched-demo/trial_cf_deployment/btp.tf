@@ -18,14 +18,8 @@ resource "btp_subaccount_entitlement" "cloudfoundry" {
   subaccount_id = btp_subaccount.teched-2025.id
   service_name  = "APPLICATION_RUNTIME"
   plan_name     = "MEMORY"
-  # amount        = 6 
+  amount        = 6 
 } 
-
-data "btp_subaccount_entitlement" "cloudfoundry" {
-  subaccount_id = btp_subaccount.teched-2025.id
-  service_name  = "APPLICATION_RUNTIME"
-  plan_name     = "MEMORY"
-}
 
 resource "btp_subaccount_environment_instance" "cloudfoundry" {
   subaccount_id    = btp_subaccount.teched-2025.id

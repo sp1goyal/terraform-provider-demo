@@ -117,7 +117,7 @@ jobs:
         with:
           name: terraform-demo-output
           path: |
-            btp-demo/terraform-state.json
-            btp-demo/terraform-resources.txt
-            btp-demo/terraform-graph.dot
-            btp-demo/terraform-graph.png
+            teched-demo/trial_cf_deployment/terraform-state.json
+            teched-demo/trial_cf_deployment/terraform-resources.txt
+            teched-demo/trial_cf_deployment/terraform-graph.dot
+            teched-demo/trial_cf_deployment/terraform-graph.png

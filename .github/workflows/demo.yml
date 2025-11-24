@@ -81,8 +81,7 @@ jobs:
 
       - name: Prepare app artifact
         run: |
-          zip -r ./assets/helloterraform.zip . -i ./assets/helloterraform/
-          
+          zip -r ./assets/helloterraform.zip ./assets/helloterraform
       - name: Terraform Apply (Demo Mode)
         run: terraform apply -auto-approve tfplan
 

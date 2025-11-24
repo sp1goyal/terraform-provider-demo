@@ -18,14 +18,14 @@ jobs:
             TF_IN_AUTOMATION: "true"
 
             # BTP Credentials
-            BTP_USERNAME: ${{ secrets.BTP_USERNAME }}
-            BTP_PASSWORD: ${{ secrets.BTP_PASSWORD }}
-            BTP_GLOBALACCOUNT: ${{ secrets.BTP_GLOBALACCOUNT }}
+            TF_VAR_btp_username: ${{ secrets.BTP_USERNAME }}
+            TF_VAR_btp_password: ${{ secrets.BTP_PASSWORD }}
+            TF_VAR_btp_globalaccount: ${{ secrets.BTP_GLOBALACCOUNT }}
 
             # Cloud Foundry Credentials
-            CF_API_URL: ${{ secrets.CF_API_URL }}
-            CF_USER: ${{ secrets.CF_USER }}
-            CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
+            TF_VAR_cf_api_url: ${{ secrets.CF_API_URL }}
+            TF_VAR_cf_user: ${{ secrets.CF_USER }}
+            TF_VAR_cf_password: ${{ secrets.CF_PASSWORD }}
 
         steps:
             - name: Checkout Repository

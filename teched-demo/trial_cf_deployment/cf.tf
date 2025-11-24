@@ -36,14 +36,10 @@ data "cloudfoundry_domain" "domain" {
   name = "cfapps.${btp_subaccount.teched-2025.region}.hana.ondemand.com"
 }
 
-resource "random_id" "suffix" {
-  byte_length = 4
-}
-
 resource "cloudfoundry_route" "hello-terraform-route" {
   domain = data.cloudfoundry_domain.domain.id
   space  = cloudfoundry_space.space.id
-  host   = "hello-terraform-${random_id.suffix.hex}"
+  host   = "hello-terraform-2025"
   depends_on = [ cloudfoundry_space_role.cf_space_managers, cloudfoundry_space_role.cf_space_developers ]
 }
 
@@ -79,11 +75,11 @@ resource "cloudfoundry_service_instance" "hello-terraform-xsuaa" {
   })
 }
 
-data "archive_file" "hello-terraform" {
-  type        = "zip"
-  source_dir  = "./assets/helloterraformapp"
-  output_path = "./assets/helloterraform.zip"
-}
+# data "archive_file" "hello-terraform" {
+#   type        = "zip"
+#   source_dir  = "./assets/helloterraformapp"
+#   output_path = "./assets/helloterraform.zip"
+# }
 
 resource "cloudfoundry_app" "hello-terraform" {
   name       = "hello-terraform"
@@ -102,4 +98,7 @@ resource "cloudfoundry_app" "hello-terraform" {
       route = cloudfoundry_route.hello-terraform-route.url
     }
   ]
+  provisioner "local-exec" {
+      command = "zip -r ./assets/helloterraformapp.zip ./assets/helloterraform.zip/"
+  }
 }

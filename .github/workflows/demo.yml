@@ -60,10 +60,12 @@ jobs:
           git clone https://github.com/cloudfoundry/terraform-provider-cloudfoundry.git
 
           cd terraform-provider-btp
-          make install
+          make install > /dev/null
 
           cd ../terraform-provider-cloudfoundry
-          make install
+          make install > /dev/null
+
+          ls /home/runner/go/bin
 
           cd ../
 

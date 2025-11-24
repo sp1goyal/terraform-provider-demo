@@ -51,6 +51,9 @@ jobs:
           }
           EOF
 
+          echo "Terraform RC file created:"
+          cat ~/.terraformrc
+
       - name: Terraform Init
         run: |
           git clone https://github.com/SAP/terraform-provider-btp.git

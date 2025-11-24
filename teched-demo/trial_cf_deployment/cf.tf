@@ -55,11 +55,11 @@ resource "cloudfoundry_service_instance" "hello-terraform-xsuaa" {
   depends_on = [ cloudfoundry_space_role.cf_space_managers ]
   type         = "managed"
   parameters = jsonencode({
-    xsappname   = "hello-terraform-${random_id.suffix.hex}"
+    xsappname   = "hello-terraform-2025"
     tenant-mode = "shared"
     scopes = [
       {
-        name        = "hello-terraform-${random_id.suffix.hex}.Display"
+        name        = "hello-terraform-2025.Display"
         description = "Display"
       },
     ]
@@ -68,7 +68,7 @@ resource "cloudfoundry_service_instance" "hello-terraform-xsuaa" {
         name        = "Viewer"
         description = ""
         scope-references = [
-          "hello-terraform-${random_id.suffix.hex}.Display"
+          "hello-terraform-2025.Display"
         ]
       }
     ]

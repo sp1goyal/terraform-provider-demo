@@ -3,33 +3,16 @@ resource "cloudfoundry_space" "space" {
     org = btp_subaccount_environment_instance.cloudfoundry.platform_id
 }
 
-# resource "cloudfoundry_org_role" "my_role" {
-#   username = var.btp_username
-#   type     = "organization_manager"
-#   org      = btp_subaccount_environment_instance.cloudfoundry.platform_id
-#   depends_on = [ btp_subaccount_role_collection_assignment.service_admin ]
-# }
-
-# resource "cloudfoundry_org_role" "my_role_user" {
-#   username = var.btp_username
-#   type     = "organization_user"
-#   org      = btp_subaccount_environment_instance.cloudfoundry.platform_id
-#   depends_on = [ btp_subaccount_role_collection_assignment.service_admin ]
-# }
-
 resource "cloudfoundry_space_role" "cf_space_managers" {
   username   = var.btp_username
   type       = "space_manager"
   space      = cloudfoundry_space.space.id
-  # depends_on = [cloudfoundry_org_role.my_role, cloudfoundry_org_role.my_role_user]
 }
 
 resource "cloudfoundry_space_role" "cf_space_developers" {
-  # for_each   = toset(var.cf_space_developers)
   username   = var.btp_username
   type       = "space_developer"
   space      = cloudfoundry_space.space.id
-  # depends_on = [cloudfoundry_org_role.my_role, cloudfoundry_org_role.my_role_user]
 }
 
 data "cloudfoundry_domain" "domain" {
@@ -74,12 +57,6 @@ resource "cloudfoundry_service_instance" "hello-terraform-xsuaa" {
     ]
   })
 }
-
-# data "archive_file" "hello-terraform" {
-#   type        = "zip"
-#   source_dir  = "./assets/helloterraformapp"
-#   output_path = "./assets/helloterraform.zip"
-# }
 
 resource "cloudfoundry_app" "hello-terraform" {
   name       = "hello-terraform"
